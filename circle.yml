@@ -11,8 +11,8 @@ jobs:
                 mkdir -p ~/docker; docker save panoramatwelve/selftrigger:latest > ~/docker/image.tar
             - run: |
                 mkdir /tmp/logs
-                docker run -d panoramatwelve/selftrigger:latest "cd /etc" > /tmp/logs/dockerrun.log 2>&1
-                cat /tmp/logs/dockerrun.log
+#                docker run -d panoramatwelve/selftrigger:latest "cd /etc" > /tmp/logs/dockerrun.log 2>&1
+#                cat /tmp/logs/dockerrun.log
             - run: |
                 mkdir /tmp/artifacts
                 ulimit -c unlimited
