@@ -9,7 +9,6 @@ jobs:
                 mkdir /tmp/artifacts
                 mkdir /tmp/logs
                 ulimit -c unlimited
-                docker login -u $LOGIN_MINE_USERNAME -p $LOGIN_MINE_PW
                 docker run -it -w /usr/workspace -v $(pwd):/usr/workspace -e LOGIN_MINE_USERNAME=$LOGIN_MINE_USERNAME -e LOGIN_MINE_PW=$LOGIN_MINE_PW joyzoursky/python-chromedriver:3.7 "./scripts/execute_automation.sh" > /tmp/logs/dockerrun.log 2>&1
                 move *.png /tmp/artifacts
             - store_artifacts:
