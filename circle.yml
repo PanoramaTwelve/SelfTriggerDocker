@@ -6,21 +6,14 @@ jobs:
             - checkout
             - run: |
                 docker info
-                if [[ -e ~/docker/image.tar ]]; then docker load --input ~/docker/image.tar; fi
-                docker build --rm=false -t panoramatwelve/selftrigger:latest .
-                mkdir -p ~/docker; docker save panoramatwelve/selftrigger:latest > ~/docker/image.tar
-            - run: |
-                mkdir /tmp/logs
-#                docker run -d panoramatwelve/selftrigger:latest "cd /etc" > /tmp/logs/dockerrun.log 2>&1
-#                cat /tmp/logs/dockerrun.log
-            - run: |
                 mkdir /tmp/artifacts
+                mkdir /tmp/logs
                 ulimit -c unlimited
-                docker save panoramatwelve/selftrigger:latest > /tmp/artifacts/selftrigger.docker.tar
-            - run: |
-                docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-                docker push panoramatwelve/selftrigger:latest
+                docker login -u $LOGIN_MINE_USERNAME -p $LOGIN_MINE_PW
+                docker run -it -w /usr/workspace -v $(pwd):/usr/workspace -e LOGIN_MINE_USERNAME=$LOGIN_MINE_USERNAME -e LOGIN_MINE_PW=$LOGIN_MINE_PW joyzoursky/python-chromedriver:3.7 "./scripts/execute_automation.sh" > /tmp/logs/dockerrun.log 2>&1
+                move *.png /tmp/artifacts
             - store_artifacts:
                 path: /tmp/artifacts
             - store_artifacts:
                 path: /tmp/logs
+
